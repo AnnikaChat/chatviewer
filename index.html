@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Chat Viewer</title>
+<style>
+body { background:#050510; color:white; font-family:Arial; margin:0; padding:10px; }
+.msg { margin:8px 0; padding:10px; border-radius:10px; max-width:75%; }
+.ella { background:linear-gradient(135deg,#4b8dff,#b44bff); margin-left:auto; }
+.mama { background:rgba(40,40,70,0.9); margin-right:auto; }
+.meta { font-size:10px; opacity:0.7; margin-top:4px; }
+</style>
+</head>
+<body>
+
+<div id="chat">Lade Chat…</div>
+
+<script>
+fetch("chat.txt")
+.then(r => r.text())
+.then(t => {
+    const chat = document.getElementById("chat");
+    chat.innerHTML = "";
+
+    t.split("\n").forEach(line => {
+        const m = line.match(/^(\d{2}\.\d{2}\.\d{2}, \d{2}:\d{2}) - (.*?): (.*)$/);
+        if (!m) return;
+
+        const div = document.createElement("div");
+        div.className = "msg " + (m[2].toLowerCase().includes("ella") ? "ella" : "mama");
+        div.innerHTML = m[3] + `<div class="meta">${m[1]} · ${m[2]}</div>`;
+        chat.appendChild(div);
+    });
+});
+</script>
+
+</body>
+</html>
